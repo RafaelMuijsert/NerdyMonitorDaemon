@@ -35,7 +35,7 @@ def get_uptime():
     Returns:
         str: uptime as a string
     """
-    process = subprocess.Popen(['uptime'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(['uptime', '-p'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, _ = process.communicate()
     output = output.decode('utf-8').strip()  # Decode bytes to string and remove leading/trailing spaces
     return output
