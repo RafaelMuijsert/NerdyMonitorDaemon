@@ -73,7 +73,7 @@ def main():
     parser.parse_args()
     
     config = configparser.ConfigParser()
-    config.read('./config/nmd.ini')
+    config.read('/etc/nmd/nmd.ini')
 
     logging.basicConfig(level=logging.INFO)
 
