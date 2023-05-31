@@ -92,9 +92,7 @@ def main():
             logging.info(f'CPU load: {load}')
             cursor.execute(
                 INSERT_QUERY.format(measurement = 'processorload'), 
-                load,
-                strftime('%Y-%m-%d %H:%M:%S'),
-                config['nmd']['component-id']
+                (load, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
 
         if DISK_SPACE:
@@ -102,9 +100,7 @@ def main():
             logging.info(f'Used disk space: {disk_space}')
             cursor.execute(
                 INSERT_QUERY.format(measurement = 'used_diskspace_in_GB'), 
-                disk_space,
-                strftime('%Y-%m-%d %H:%M:%S'),
-                config['nmd']['component-id']
+                (disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
         
         if UPTIME:
@@ -112,9 +108,7 @@ def main():
             logging.info(f'Uptime: {uptime}')
             cursor.execute(
                 INSERT_QUERY.format(measurement = 'uptime'), 
-                uptime,
-                strftime('%Y-%m-%d %H:%M:%S'),
-                config['nmd']['component-id']
+                (uptime, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
 
         db.commit()
