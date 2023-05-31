@@ -13,6 +13,11 @@ CPU_LOAD = True
 DISK_SPACE = True
 UPTIME = True
 
+INSERT_QUERY = """
+INSERT INTO Measurement ({measurement}, date, Infrastructure_component_id)
+VALUES (?, ?, ?)
+"""
+
 def get_cpu_load():
     """Gets the current processor load 
 
@@ -80,25 +85,39 @@ def main():
     logging.basicConfig(level=logging.INFO)
 
     db = connect_to_database(config['db'])
+    cursor = db.cursor()
     while True:
-        # TODO: Measure server health
         if CPU_LOAD:
             load = get_cpu_load()
             logging.info(f'CPU load: {load}')
-            # TODO: Update database
+            cursor.execute(
+                INSERT_QUERY.format(measurement = 'processorload'), 
+                load,
+                strftime('%Y-%m-%d %H:%M:%S'),
+                config['nmd']['component-id']
+            )
 
         if DISK_SPACE:
             disk_space = get_used_disk_space()
             logging.info(f'Used disk space: {disk_space}')
-            # TODO: Update database
+            cursor.execute(
+                INSERT_QUERY.format(measurement = 'used_diskspace_in_GB'), 
+                disk_space,
+                strftime('%Y-%m-%d %H:%M:%S'),
+                config['nmd']['component-id']
+            )
         
         if UPTIME:
             uptime = get_uptime()
             logging.info(f'Uptime: {uptime}')
-            # TODO: Update database
+            cursor.execute(
+                INSERT_QUERY.format(measurement = 'uptime'), 
+                uptime,
+                strftime('%Y-%m-%d %H:%M:%S'),
+                config['nmd']['component-id']
+            )
 
-        # TODO: Commit database
-
+        db.commit()
         sleep(int(config['nmd']['interval']))
 
     db.close()
