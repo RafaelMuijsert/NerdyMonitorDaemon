@@ -9,17 +9,16 @@ import subprocess
 from time import sleep, strftime
 from datetime import datetime
 
-CPU_LOAD = True
-DISK_SPACE = True
-UPTIME = True
-
 MEASUREMENT_INSERT_QUERY = """
-INSERT INTO Measurement ({measurement}, date, Infrastructure_component_id)
-VALUES (?, ?, ?)
-"""
-DISK_SPACE_QUERY = """
-INSERT INTO Measurement (used_diskspace_in_GB, total_diskspace_in_GB, date, Infrastructure_component_id)
-VALUES (?, ?, ?, ?)
+INSERT INTO Measurement (
+    processorload,
+    total_diskspace_in_GB,
+    used_diskspace_in_GB,
+    date,
+    Infrastructure_component_id,
+    uptime
+)
+VALUES (?, ?, ?, ?, ?, ?)
 """
 
 def get_cpu_load():
@@ -99,31 +98,25 @@ def main():
     db = connect_to_database(config['db'])
     cursor = db.cursor()
     while True:
-        if CPU_LOAD:
-            load = get_cpu_load()
-            logging.info(f'CPU load: {load}')
-            cursor.execute(
-                MEASUREMENT_INSERT_QUERY.format(measurement = 'processorload'), 
-                (load, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
-            )
+        load = get_cpu_load()
+        logging.info(f'CPU load: {load}')
 
-        if DISK_SPACE:
-            used_disk_space = get_used_disk_space()
-            total_disk_space = get_total_disk_space()
-            logging.info(f'Used disk space: {used_disk_space}GB/{total_disk_space}GB')
-            cursor.execute(
-                DISK_SPACE_QUERY, 
-                (used_disk_space, total_disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
-            )
+        used_disk_space = get_used_disk_space()
+        total_disk_space = get_total_disk_space()
+        logging.info(f'Used disk space: {used_disk_space}GB/{total_disk_space}GB')
         
-        if UPTIME:
-            uptime = get_uptime()
-            logging.info(f'Uptime: {uptime}')
-            cursor.execute(
-                MEASUREMENT_INSERT_QUERY.format(measurement = 'uptime'), 
-                (uptime, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
-            )
+    
+        uptime = get_uptime()
+        logging.info(f'Uptime: {uptime}')
 
+        cursor.execute(
+            MEASUREMENT_INSERT_QUERY,
+            load,
+            used_disk_space,
+            strftime('%Y-%m-%d %H:%M:%S'),
+            config['nmd']['component-id'],
+            uptime
+        )
         db.commit()
         sleep(int(config['nmd']['interval']))
 
