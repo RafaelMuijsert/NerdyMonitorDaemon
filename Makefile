@@ -1,4 +1,5 @@
 INSTALL_DIR=/usr/local/bin
+SYSTEMD_UNIT_DIR=/lib/systemd/system
 CONFIG_DIR=/etc/nmd
 
 requirements:
@@ -7,3 +8,8 @@ requirements:
 
 install:
 	install -m 755 nmd.py $(INSTALL_DIR)/nmd
+
+uninstall:
+	rm -rf $(INSTALL_DIR)/nmd
+	rm -rf $(SYSTEMD_UNIT_DIR)/nmd.service
+	rm -rf $(CONFIG_DIR)
