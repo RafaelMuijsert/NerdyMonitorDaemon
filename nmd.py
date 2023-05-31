@@ -26,13 +26,13 @@ def get_cpu_load():
     """
     return 1.0
 
-def get_used_disk_space():
+def get_disk_space():
     """Gets the current amount of used disk space
 
     Returns:
-        float: the amount of used disk space
+        tuple: the amount of used disk space, the amount of available disk space
     """
-    return 1.0
+    return (120, 240)
 
 def get_uptime():
     """Gets the current uptime
