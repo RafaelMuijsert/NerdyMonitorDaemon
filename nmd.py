@@ -49,7 +49,7 @@ def connect_to_database(config):
     Returns:
         MariaDB instance: a valid MariaDB connection
     """    
-    logging.info(f'Connecting to database: {config["host"]}')
+    logging.info(f'Connecting to database: {config["host"]}/{config["db"]}')
     db = False
     while not db:
         try:
@@ -60,6 +60,7 @@ def connect_to_database(config):
                 password=config['password'],
                 database=config['db']
             )
+            logging.info('Connection to database succesful')
             return db
         except Exception as err:
             logging.error(f'Could not connect to database: {err}')
