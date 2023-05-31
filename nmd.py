@@ -10,12 +10,12 @@ from time import sleep, strftime
 from datetime import datetime
 
 MEASUREMENT_INSERT_QUERY = """
-INSERT INTO Measurement (
+insert into measurement (
     processorload,
-    total_diskspace_in_GB,
-    used_diskspace_in_GB,
+    total_diskspace_in_gb,
+    used_diskspace_in_gb,
     date,
-    Infrastructure_component_id,
+    infrastructure_component_id,
     uptime
 )
 VALUES (?, ?, ?, ?, ?, ?)
@@ -105,15 +105,23 @@ def main():
         total_disk_space = get_total_disk_space()
         logging.info(f'Used disk space: {used_disk_space}GB/{total_disk_space}GB')
         
-    
         uptime = get_uptime()
         logging.info(f'Uptime: {uptime}')
 
         cursor.execute(
             MEASUREMENT_INSERT_QUERY,
-            (load, used_disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'], uptime)
+            (load,
+                total_disk_space,
+                used_disk_space, 
+                strftime('%Y-%m-%d %H:%M:%S'), 
+                config['nmd']['component-id'], 
+                uptime)
         )
-        db.commit()
+        try:
+            db.commit()
+        except Exception as err:
+            logging.error(f'Error committing measurements: {err}')
+        
         sleep(int(config['nmd']['interval']))
 
     db.close()
