@@ -3,7 +3,7 @@ SYSTEMD_UNIT_DIR=/lib/systemd/system
 CONFIG_DIR=/etc/nmd
 
 requirements:
-	apt install -y libmariadb3 libmariadb-dev
+	apt install -y python3-pip libmariadb3 libmariadb-dev
 	pip3 -qqq install -r requirements.txt
 
 install: requirements
