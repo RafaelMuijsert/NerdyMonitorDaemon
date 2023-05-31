@@ -22,17 +22,25 @@ def get_cpu_load():
     """Gets the current processor load 
 
     Returns:
-        float: the current processor load ranging from 0.0 - 1.0
+        float: the current processor load ranging from 0.0 - 100.0
     """
-    return 1.0
+    return 50.0
 
-def get_disk_space():
-    """Gets the current amount of used disk space
+def get_used_disk_space():
+    """gets the current amount of used disk space
 
-    Returns:
-        tuple: the amount of used disk space, the amount of available disk space
+    returns:
+        float: the amount of used disk space in gigabytes
     """
-    return (120, 240)
+    return 10.0
+
+def get_total_disk_space():
+    """gets the total amoutn of disk space
+
+    returns:
+        float: the total amount of disk space in gigabytes
+    """
+    return 120.0
 
 def get_uptime():
     """Gets the current uptime
