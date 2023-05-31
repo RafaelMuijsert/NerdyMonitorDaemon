@@ -13,9 +13,13 @@ CPU_LOAD = True
 DISK_SPACE = True
 UPTIME = True
 
-INSERT_QUERY = """
+MEASUREMENT_INSERT_QUERY = """
 INSERT INTO Measurement ({measurement}, date, Infrastructure_component_id)
 VALUES (?, ?, ?)
+"""
+DISK_SPACE_QUERY = """
+INSERT INTO Measurement (used_diskspace_in_GB, total_diskspace_in_GB, date, Infrastructure_component_id)
+VALUES (?, ?, ?, ?)
 """
 
 def get_cpu_load():
@@ -99,23 +103,24 @@ def main():
             load = get_cpu_load()
             logging.info(f'CPU load: {load}')
             cursor.execute(
-                INSERT_QUERY.format(measurement = 'processorload'), 
+                MEASUREMENT_INSERT_QUERY.format(measurement = 'processorload'), 
                 (load, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
 
         if DISK_SPACE:
-            disk_space = get_used_disk_space()
-            logging.info(f'Used disk space: {disk_space}')
+            used_disk_space = get_used_disk_space()
+            total_disk_space = get_total_disk_space()
+            logging.info(f'Used disk space: {used_disk_space}GB/{total_disk_space}GB')
             cursor.execute(
-                INSERT_QUERY.format(measurement = 'used_diskspace_in_GB'), 
-                (disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
+                DISK_SPACE_QUERY, 
+                (used_disk_space, total_disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
         
         if UPTIME:
             uptime = get_uptime()
             logging.info(f'Uptime: {uptime}')
             cursor.execute(
-                INSERT_QUERY.format(measurement = 'uptime'), 
+                MEASUREMENT_INSERT_QUERY.format(measurement = 'uptime'), 
                 (uptime, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'])
             )
 
