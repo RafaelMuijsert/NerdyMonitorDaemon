@@ -8,6 +8,8 @@ requirements:
 
 install:
 	install -m 755 nmd.py $(INSTALL_DIR)/nmd
+	install -m 644 config/nmd.service $(SYSTEMD_UNIT_DIR)
+	install -m 644 config/nmd.ini $(CONFIG_DIR)
 
 uninstall:
 	rm -rf $(INSTALL_DIR)/nmd
