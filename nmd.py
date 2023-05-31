@@ -10,7 +10,7 @@ from time import sleep, strftime
 from datetime import datetime
 
 MEASUREMENT_INSERT_QUERY = """
-insert into measurement (
+INSERT INTO Measurement (
     processorload,
     total_diskspace_in_gb,
     used_diskspace_in_gb,
