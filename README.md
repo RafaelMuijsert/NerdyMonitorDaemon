@@ -10,7 +10,26 @@ Navigate into the project root directory
 ```bash
 $ cd NerdyMonitorDaemon
 ```
-Now install the required Python dependencies
+Install the required dependencies and install the application
 ```bash
-$ pip install -r requirements.txt
+$ sudo make install
+```
+
+## Configuration
+The configuration file is located in `/etc/nmd/config.ini`
+Be sure to edit this configuration with your specific database configuration
+
+## Enabling and running the daemon
+After the daemon has been installed, the nmd service can now be configured using systemd.
+To enable the daemon on startup, use the following command:
+```bash
+sudo systemctl enable nmd
+```
+To start the daemon once, use the following command:
+```bash
+sudo systemctl start nmd
+```
+To view the daemon status, use the following command:
+```bash
+sudo systemctl status nmd
 ```
