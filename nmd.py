@@ -111,11 +111,7 @@ def main():
 
         cursor.execute(
             MEASUREMENT_INSERT_QUERY,
-            load,
-            used_disk_space,
-            strftime('%Y-%m-%d %H:%M:%S'),
-            config['nmd']['component-id'],
-            uptime
+            (load, used_disk_space, strftime('%Y-%m-%d %H:%M:%S'), config['nmd']['component-id'], uptime)
         )
         db.commit()
         sleep(int(config['nmd']['interval']))
