@@ -49,6 +49,7 @@ def connect_to_database(config):
     Returns:
         MariaDB instance: a valid MariaDB connection
     """    
+    logging.info(f'Connecting to database: {config["host"]}')
     db = False
     while not db:
         try:
@@ -77,7 +78,7 @@ def main():
 
     logging.basicConfig(level=logging.INFO)
 
-    # db = connect_to_database(config['db'])
+    db = connect_to_database(config['db'])
     while True:
         # TODO: Measure server health
         if CPU_LOAD:
