@@ -27,6 +27,8 @@ def get_cpu_load():
     Returns:
         float: the current processor load ranging from 0.0 - 100.0
     """
+    # TODO: Implementatie door Mattias Bosveld
+    # Akkoord gegaan en staat sinds 4 mei op Trello
     return 50.0
 
 def get_used_disk_space():
