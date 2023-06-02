@@ -35,7 +35,10 @@ def get_used_disk_space():
     returns:
         float: the amount of used disk space in gigabytes
     """
-    return 10.0
+    process = subprocess.Popen( "df -h --total | tail -n 1 | awk '{print $3 }'", stdout=subprocess.PIPE, shell=True )
+    output, _ = process.communicate()
+    used_disk_space = float(output.decode('utf-8').strip().strip('G'))
+    return used_disk_space
 
 def get_total_disk_space():
     """gets the total amoutn of disk space
@@ -43,7 +46,10 @@ def get_total_disk_space():
     returns:
         float: the total amount of disk space in gigabytes
     """
-    return 120.0
+    process = subprocess.Popen( "df -h --total | tail -n 1 | awk '{print $4}'", stdout=subprocess.PIPE, shell=True )
+    output, _ = process.communicate()
+    total_disk_space = float(output.decode('utf-8').strip().strip('G'))
+    return total_disk_space
 
 def get_uptime():
     """Gets the current uptime
